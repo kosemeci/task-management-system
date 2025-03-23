@@ -1,0 +1,12 @@
+[submodule "TaskManagementSystem"]
+	path = TaskManagementSystem
+	url = https://github.com/kosemeci/TaskManagementSystem.git
+[submodule "IU-Task-Management"]
+	path = IU-Task-Management
+	url = https://github.com/kosemeci/IU-Task-Management.git
+[submodule "backend"]
+	path = backend
+	url = https://github.com/kosemeci/TaskManagementSystem.git
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/kosemeci/IU-Task-Management.git

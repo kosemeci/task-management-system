@@ -1,0 +1,48 @@
+version: '3.7'
+
+services:
+  # Backend servisi (Spring Boot)
+  backend:
+    build:
+      context: ./backend # Backend klasörüne gidiyoruz
+    ports:
+      - "8080:8080" # Spring Boot'un 8080 portunu dışa açıyoruz
+    networks:
+      - app-network
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
+      # SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: alpi1905
+    depends_on:
+      - db # Veritabanı servisine bağlı
+    # Frontend servisi (React)
+  frontend:
+    build:
+      context: ./frontend # Frontend klasörüne gidiyoruz
+    ports:
+      - "5173:80" # React uygulamasını 81 portunda çalıştırıyoruz
+    networks:
+      - app-network
+  # PostgreSQL servisi
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: alpi1905
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backup.sql:/docker-entrypoint-initdb.d/backup.sql # Yedeği doğru dizine ekliyoruz
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
