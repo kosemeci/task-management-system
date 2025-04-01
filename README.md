@@ -1,5 +1,5 @@
 
-**#[TR]**
+**[TR]**
 
 # Task Management System - DevOps Süreci
 
