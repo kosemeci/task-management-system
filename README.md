@@ -1,5 +1,6 @@
 [TR]
 
+
 # Task Management System - DevOps Süreci
 
 Bu proje, **React** tabanlı bir **frontend** ve **Spring Boot** tabanlı bir **backend** içeren bir **Task Management System** uygulamasıdır. Projenin **DevOps** sürecini yönetmek için **Docker Compose**, **Jenkins** ve **ngrok** gibi araçlar kullanılmaktadır.
@@ -7,12 +8,12 @@ Bu proje, **React** tabanlı bir **frontend** ve **Spring Boot** tabanlı bir **
 ## 📌 Proje Yapısı
 - **Backend** ve **Frontend** projeleri **submodule** olarak eklenmiştir.
 - **Docker Compose** ile servislerin yönetimi sağlanmaktadır.
-- **Jenkins** CI/CD süreçlerini yönetmek için kullanılmaktadır.
+- **Jenkins CI/CD** süreçlerini yönetmek için kullanılmaktadır.
 - **ngrok** ile Webhook tetikleyicileri için dış dünyaya erişim sağlanmaktadır.
 
 ---
 
-## 🐳 Docker Kurulumu
+## 🐋 Docker Kurulumu
 
 ### ✅ Windows İçin Docker Kurulumu
 1. **Docker Desktop for Windows**'u [buradan](https://www.docker.com/products/docker-desktop/) indir.
@@ -40,7 +41,7 @@ docker-compose --version
 
 ---
 
-## 📄 Docker Compose Yapılandırması
+## 📝 **Docker Compose File Yapısı**
 Docker Compose, tüm servisleri birbirine bağlı olarak yönetmek için kullanılan bir araçtır. İşte projenin `docker-compose.yml` dosyasının temel içeriği:
 
 ```yaml
@@ -93,10 +94,10 @@ volumes:
 ```
 ---
 
-## 🚀 Jenkins ile CI/CD Süreci
+## 🚀 Jenkins ile CI/CD Pipeline
 Jenkins, test ve deploy işlemlerini yönetmek için kullanılan bir CI/CD aracıdır.
 
-### ✅ Jenkins Kurulumu
+### ✅ **Jenkins Kurulumu**
 ```bash
 docker run -d \
   --name jenkins \
@@ -108,21 +109,18 @@ docker run -d \
   jenkins/jenkins:lts
 ```
 
-### 🔑 İlk Admin Şifresini Alma
+### 🔑 **Jenkins Admin Şifresini Alma**
 ```bash
 docker logs jenkins
 ```
-Çıktıda bulunan **"Please use the following password to proceed to installation:"** satırındaki şifreyi kopyalayarak Jenkins arayüzüne giriş yap.
 
-### 🛠️ Gerekli Eklentiler
-Jenkins UI'ya giriş yaptıktan sonra aşağıdaki eklentileri yükleyin:
+### 🛠️ **Gerekli Jenkins Plugin'leri**
 - **Git Plugin**
 - **Docker Plugin**
 - **Docker Pipeline**
 - **Webhook Trigger**
 
-### 📌 Pipeline Konfigürasyonu
-Jenkinsfile dosyası oluşturularak CI/CD süreci otomatik hale getirilmiştir:
+### 📂 **Jenkins Pipeline Konfigürasyonu**
 
 ```bash
 #!/bin/bash
@@ -138,40 +136,33 @@ docker-compose up -d --build
 docker ps
 ```
 
-⚠️ **Jenkins ortamında Java 17 kullanılmalıdır.**
+🚨 **Jenkins ortamında Java 17 kullanılmalıdır.**
 
 ---
 
-## 🌍 ngrok ile Localhost'u Dış Dünyaya Açma
+## 🌍 **ngrok ile Jenkins Webhook Trigger Ayarı**
 ngrok, localhost üzerindeki bir servise dış dünyadan erişim sağlamak için kullanılır.
 
-### ✅ Ngrok Kurulumu
+### ✅ **Ngrok Kurulumu**
 1. [Ngrok resmi sitesine](https://ngrok.com/) kaydol ve exe dosyasını indir.
-2. **Auth Token**'ını tanıt:
+2. **Auth Token**'ı tanıt:
    ```bash
    ngrok config add-authtoken YOUR_AUTH_TOKEN
    ```
-3. Jenkins gibi bir servisi dış dünyaya açmak için aşağıdaki komutu çalıştır:
+3. Jenkins'i dış dünyaya açmak için:
    ```bash
    ngrok http http://localhost:9090
    ```
-4. Terminalde oluşan **ngrok URL'sini** kullanarak webhook ayarlarını yapabilirsin.
+4. Terminalde oluşan **ngrok URL'sini** Webhook için kullan.
 
 ---
 
-## 🔗 Webhook ile Jenkins Entegrasyonu
-Webhook, GitHub push işlemleriyle Jenkins'in otomatik olarak tetiklenmesini sağlar.
+## 🔗 **Webhook ile Jenkins CI/CD Tetikleme**
 
-### ✅ Webhook Ayarları
 1. **GitHub Repo Ayarlarına** gir ve **Webhook** sekmesine tıkla.
-2. **Payload URL** kısmına **ngrok URL'ini** ekleyerek sonuna `/github-webhook/` ekle.
+2. **Payload URL** olarak **ngrok URL'ini** ekleyerek `/github-webhook/` son ekini kullan.
 3. **Content Type** olarak **application/json** seç.
 4. **Just the push event** seçeneğini işaretle.
 
 Bu ayarlar sayesinde repo güncellendiğinde Jenkins pipeline otomatik olarak çalışacaktır. 🎉
-
----
-
-## 🎯 Sonuç
-Bu DevOps süreci ile **React Frontend**, **Spring Boot Backend** ve **PostgreSQL** veritabanını içeren **Task Management System** projesi **Docker** ile yönetilmekte ve **Jenkins CI/CD** süreci ile otomatik olarak deploy edilmektedir. 🚀
 
